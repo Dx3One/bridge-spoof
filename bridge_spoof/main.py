@@ -136,8 +136,15 @@ def detach_from_any_bridge(iface: str):
 # --------------------------------------------------------------------------- #
 #  Interaktive Auswahl der Interfaces ------------------------------------- #
 def list_interfaces():
-    """Alle Interfaces im System ausgeben (ohne Loopback)."""
-    return [d for d in os.listdir("/sys/class/net") if d != "lo"]
+    """
+    Alle Netzwerk‑Interfaces im System ausgeben – außer:
+      * loopback (lo)
+      * wireless (wlan* , wlp*)
+    """
+    return [
+        i for i in os.listdir("/sys/class/net")
+        if i != "lo" and not (i.startswith("wlan") or i.startswith("wlp"))
+    ]
 
 def pick_interface(prompt_text):
     """Menü‑Auswahl eines Interfaces."""
@@ -171,12 +178,18 @@ def ensure_root():
 #  Hauptlogik --------------------------------------------------------------- #
 def main():
     # ---- Interface‑Auswahl (interaktiv) ----
-    iface_a = pick_interface("Wähle Interface für eth0")
+    iface_a = pick_interface(
+        "Welches Interface steckt an dem Switch, "
+        "der mit 802.1X getestet werden soll?"
+    )
     if not iface_a:
         print("[⚠️] Kein Interface gewählt – Script wird beendet.", file=sys.stderr)
         sys.exit(1)
 
-    iface_b = pick_interface("Wähle Interface für eth1")
+    iface_b = pick_interface(
+        "An welchem Interface hängt dein Notebook, das sich gegen den Switch "
+        "authentifizieren soll?"
+    )
     if not iface_b:
         print("[⚠️] Kein Interface gewählt – Script wird beendet.", file=sys.stderr)
         sys.exit(1)
