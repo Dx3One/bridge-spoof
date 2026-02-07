@@ -248,5 +248,3 @@ if __name__ == "__main__":
         print("⚠️  Bitte als Root ausführen (z. B. mit sudo).", file=sys.stderr)
         sys.exit(1)
     main()
-
-if __name__ == "__main__":
