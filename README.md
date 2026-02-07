@@ -1,182 +1,110 @@
-🚀 bridge‑spoof – Dein interaktives 802.1X‑Testwerkzeug
+># 🚀 **bridge‑spoof** – Dein interaktives 802.1X‑Testwerkzeug  
+> **Einfach. Schnell. Sicher.**  
 
-Einfach. Schnell. Sicher.
-
-
-
-
-
-Copy
-
+```
 ┌─────────────────────────────┐
-
-│  eth0 ──▶ br0 ──▶ eth1      │   ←  Bridge mit MAC‑Spoofing
-
+│  eth0 ──▶ br0 ──▶ eth1     │   ←  Bridge mit MAC‑Spoofing
 └─────────────────────────────┘
+        ▲                     ▼
+     tcpdump (ARP/DHCP/HTTP)   802.1X‑authentifiziertes Gerät
+```
 
-        ▲                     ▼
+**Was ist das?**  
+`bridge-spoof` ist ein kleines, aber mächtiges Python‑Tool, das:
 
-     tcpdump (ARP/DHCP/HTTP)   802.1X‑authentifiziertes Gerät
+* **Eine Bridge (`br0`) zwischen zwei beliebigen Interfaces erstellt** – so bekommst du einen virtuellen Switch unter deinem Host.
+* **Die MAC eines Interfaces spooft**, sodass du das Gerät im Netzwerk „verstecken“ kannst (z. B. beim Testen von 802.1X‑Policies).
+* **Optional einen `tcpdump`‑Filter** startet, damit du nur ARP, DHCP und HTTP/HTTPS‑Pakete in Echtzeit siehst.
+* **Beim Beenden alle Änderungen rückgängig macht** – MAC wiederherstellen, tcpdump stoppen und die Bridge entfernen.
 
-Was ist das?
+> ⚠️  **Root‑Rechte nötig!**  
+> Das Tool verändert Netzwerkschnittstellen. Führe es daher mit `sudo` aus:  
+> ```bash
+> sudo bridge-spoof
+> ```
 
+---
 
+## 🎯 Warum solltest du `bridge-spoof` verwenden?
 
-bridge-spoof ist ein kleines, aber mächtiges Python‑Tool, das:
+| Feature | Nutzen |
+|---------|--------|
+| **Interaktive Interface‑Auswahl** | Keine langen Befehlszeilen‑Flags – einfach auswählen, was du brauchst. |
+| **MAC‑Spoofing** | Teste 802.1X‑Authentifizierungsmechanismen ohne echte Geräte zu ersetzen. |
+| **Bridge‑Erstellung** | Simuliere einen Switch‑Port zwischen zwei Geräten (z. B. Notebook & Attacker). |
+| **tcpdump mit Filter** | Nur die Pakete, die dich interessieren – kein Durcheinander. |
+| **Automatisches Cleanup** | Du brauchst dir keine Sorgen um Rückstände zu machen. |
+| **pipx‑bereit** | Installiere es in einer isolierten Umgebung und halte deinen System‑Python sauber. |
 
+---
 
+## 📦 Installation (mit pipx)
 
-Eine Bridge (br0) zwischen zwei beliebigen Interfaces erstellt – so bekommst du einen virtuellen Switch unter deinem Host.
-
-Die MAC eines Interfaces spooft, sodass du das Gerät im Netzwerk „verstecken“ kannst (z. B. beim Testen von 802.1X‑Policies).
-
-Optional einen tcpdump‑Filter startet, damit du nur ARP, DHCP und HTTP/HTTPS‑Pakete in Echtzeit siehst.
-
-Beim Beenden alle Änderungen rückgängig macht – MAC wiederherstellen, tcpdump stoppen und die Bridge entfernen.
-
-⚠️  Root‑Rechte nötig!
-
-
-
-Das Tool verändert Netzwerkschnittstellen. Führe es daher mit sudo aus:
-
-
-
-
-
-Copy
-
-bash
-
-sudo bridge-spoof
-
-🎯 Warum solltest du bridge-spoof verwenden?
-
-Feature	Nutzen
-
-Interaktive Interface‑Auswahl	Keine langen Befehlszeilen‑Flags – einfach auswählen, was du brauchst.
-
-MAC‑Spoofing	Teste 802.1X‑Authentifizierungsmechanismen ohne echte Geräte zu ersetzen.
-
-Bridge‑Erstellung	Simuliere einen Switch‑Port zwischen zwei Geräten (z. B. Notebook \& Attacker).
-
-tcpdump mit Filter	Nur die Pakete, die dich interessieren – kein Durcheinander.
-
-Automatisches Cleanup	Du brauchst dir keine Sorgen um Rückstände zu machen.
-
-pipx‑bereit	Installiere es in einer isolierten Umgebung und halte deinen System‑Python sauber.
-
-📦 Installation (mit pipx)
-
-
-
-Copy
-
-bash
-
-\# 1️⃣ Projekt klonen oder als Release herunterladen
-
-git clone https://github.com/DEINNUTZERNAME/bridge-spoof.git
-
+```bash
+# 1️⃣ Projekt klonen oder als Release herunterladen
+git clone https://github.com/Dx3One/bridge-spoof.git
 cd bridge-spoof
 
-
-
-\# 2️⃣ In einer isolierten Umgebung installieren
-
+# 2️⃣ In einer isolierten Umgebung installieren
 pipx install .
 
-
-
-\# 3️⃣ Jetzt steht der Befehl zur Verfügung:
-
+# 3️⃣ Jetzt steht der Befehl zur Verfügung:
 bridge-spoof
+```
 
-Hinweis: Nach der Installation musst du sudo bridge-spoof ausführen, weil das Tool Netzwerk‑Interfaces manipuliert.
+> **Hinweis**: Nach der Installation musst du `sudo bridge-spoof` ausführen, weil das Tool Netzwerk‑Interfaces manipuliert.
 
+---
 
+## 🔧 Benutzung
 
-🔧 Benutzung
-
-
-
-Copy
-
-bash
-
+```bash
 sudo bridge-spoof
+```
 
-1️⃣ Wähle die beiden Interfaces (z. B. eth0, enp2s0).
-
-
-
-2️⃣ Optional: Gib einen Brückennamen ein – Standard ist br0.
-
-
-
-3️⃣ Spoofing‑Option: Gib eine MAC an oder drücke ENTER für Zufall.
-
-
-
-4️⃣ Optional: Eine IP/Maske für die Bridge (z. B. 192.168.1.100/24).
-
-
-
-5️⃣ Möchtest du tcpdump starten? Ja → Wähle das Interface, ggf. ein Logfile und einen Filter (Standard‑Filter ist ARP/DHCP/HTTP).
-
-
-
+1️⃣ Wähle die beiden Interfaces (z. B. `eth0`, `enp2s0`).  
+2️⃣ Optional: Gib einen Brückennamen ein – Standard ist `br0`.  
+3️⃣ Spoofing‑Option: Gib eine MAC an oder drücke ENTER für Zufall.  
+4️⃣ Optional: Eine IP/Maske für die Bridge (z. B. `192.168.1.100/24`).  
+5️⃣ Möchtest du tcpdump starten? Ja → Wähle das Interface, ggf. ein Logfile und einen Filter (Standard‑Filter ist ARP/DHCP/HTTP).  
 6️⃣ Sobald alles steht – drücke STRG+C zum Beenden.
 
+> 💡 **Tipps**  
+> * Um die Bridge später manuell zu entfernen: `sudo ip link delete br0 type bridge`.  
+> * Für dynamisches IP‑Zuweisen kannst du stattdessen `dhclient -i br0` starten.
 
+---
 
-💡 Tipps
+## 📸 Demo
 
-
-
-Um die Bridge später manuell zu entfernen: sudo ip link delete br0 type bridge.
-
-Für dynamisches IP‑Zuweisen kannst du stattdessen dhclient -i br0 starten.
-
-
-
-
-
-📸 Demo
-
-
-
-Copy
-
+```
 $ sudo bridge-spoof
-
-\[ℹ️] Aktuelle MAC von eth0: 00:1a:2b:3c:4d:5e
-
+[ℹ️] Aktuelle MAC von eth0: 00:1a:2b:3c:4d:5e
 Bitte gib die gewünschte MAC-Adresse für das erste Interface ein (z. B. 02:12:34:56:78:90) oder ENTER für Zufall:
-
-\[🕵️‍♂️] Spoofing von eth0 → 02:12:34:56:78:90
-
+[🕵️‍♂️] Spoofing von eth0 → 02:12:34:56:78:90
 Bridge-Name (Standard: br0):
-
 Bitte gib die IP/Maske für die Bridge ein... oder ENTER:
-
 Willst du tcpdump starten? (y/N): y
-
 Wähle Interface für tcpdump (Index):
-
 Live‑Output. Drücke STRG+C zum Beenden.
+```
 
 Du siehst sofort, welche ARP‑/DHCP‑Pakete durchlaufen – ideal zum Testen von 802.1X.
 
+---
 
+## 🤝 Contributing
 
-🤝 Contributing
+Du hast Ideen oder Verbesserungen?  
+- **Issues** öffnen, wenn du ein Problem findest.  
+- **Pull‑Requests** sind herzlich willkommen!  
 
-Du hast Ideen oder Verbesserungen?
+---
 
+## 📄 Lizenz
 
+Dieses Projekt ist unter der **MIT‑Lizenz** veröffentlicht – frei nutzbar, modifizierbar und verbreitern.
 
-Issues öffnen, wenn du ein Problem findest.
+--- 
 
-Pull‑Requests sind herzlich willkommen!
-
+> **Happy hacking & testing 802.1X!** 🎉  
