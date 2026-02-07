@@ -1,6 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+"""
+bridge_spoof/main.py
+--------------------
+
+Ein interaktives Tool zum Erstellen einer Bridge (br0) zwischen zwei Interfaces,
+MAC‑Spoofing, optionaler IP auf der Bridge und tcpdump‑Monitoring.
+Das Skript startet sich selbst mit `sudo`, falls es nicht als Root läuft.
+"""
+
 import subprocess
 import sys
 import os
@@ -149,6 +158,16 @@ def pick_interface(prompt_text):
         print("Ungültige Auswahl – bitte erneut versuchen.")
 
 # --------------------------------------------------------------------------- #
+#  Root‑Wrapper ------------------------------------------------------------- #
+def ensure_root():
+    """Falls nicht als root, das Skript mit sudo neu starten."""
+    if os.geteuid() != 0:
+        # Wir bauen den Befehl: sudo python -m bridge_spoof.main "$@"
+        cmd = ['sudo', sys.executable, '-m', 'bridge_spoof.main'] + sys.argv[1:]
+        print("[🔄] Neustart mit sudo …")
+        os.execvp('sudo', cmd)
+
+# --------------------------------------------------------------------------- #
 #  Hauptlogik --------------------------------------------------------------- #
 def main():
     # ---- Interface‑Auswahl (interaktiv) ----
@@ -243,8 +262,7 @@ def main():
     except KeyboardInterrupt:
         pass
 
+# --------------------------------------------------------------------------- #
 if __name__ == "__main__":
-    if os.geteuid() != 0:
-        print("⚠️  Bitte als Root ausführen (z. B. mit sudo).", file=sys.stderr)
-        sys.exit(1)
+    ensure_root()   # <--- neuer Wrapper‑Aufruf
     main()
