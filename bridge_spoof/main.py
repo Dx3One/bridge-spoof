@@ -263,6 +263,6 @@ def main():
         pass
 
 # --------------------------------------------------------------------------- #
-if __name__ == "__main__":
-    ensure_root()   # <--- neuer Wrapper‑Aufruf
-    main()
+#  Start – immer ausführen, egal ob mit `-m` oder direkt importiert   ------
+ensure_root()
+main()
