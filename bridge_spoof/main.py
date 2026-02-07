@@ -225,7 +225,9 @@ def main():
         monitor_iface = pick_interface("Wähle Interface für tcpdump")
         logfile_inp = input("Logfile angeben (oder ENTER für Live‑Ausgabe): ").strip()
         logfile = logfile_inp or None
-        DEFAULT_FILTER = "arp or (udp portrange 67-68) or tcp port 80 or tcp port 443"
+        # Standardfilter: 802.1X + ARP/DHCP/HTTP(S)
+        DEFAULT_FILTER = ("type eapol or arp or (udp portrange 67-68) "
+                          "or tcp port 80 or tcp port 443")
         filter_expr = input(f"Filter eingeben oder ENTER für Standard [{DEFAULT_FILTER}]: ").strip() or DEFAULT_FILTER
     else:
         monitor_iface = None
