@@ -75,24 +75,6 @@ sudo bridge-spoof
 
 ---
 
-## 📸 Demo
-
-```
-$ sudo bridge-spoof
-[ℹ️] Aktuelle MAC von eth0: 00:1a:2b:3c:4d:5e
-Bitte gib die gewünschte MAC-Adresse für das erste Interface ein (z. B. 02:12:34:56:78:90) oder ENTER für Zufall:
-[🕵️‍♂️] Spoofing von eth0 → 02:12:34:56:78:90
-Bridge-Name (Standard: br0):
-Bitte gib die IP/Maske für die Bridge ein... oder ENTER:
-Willst du tcpdump starten? (y/N): y
-Wähle Interface für tcpdump (Index):
-Live‑Output. Drücke STRG+C zum Beenden.
-```
-
-Du siehst sofort, welche ARP‑/DHCP‑Pakete durchlaufen – ideal zum Testen von 802.1X.
-
----
-
 ## 🤝 Contributing
 
 Du hast Ideen oder Verbesserungen?  
@@ -108,3 +90,4 @@ Dieses Projekt ist unter der **MIT‑Lizenz** veröffentlicht – frei nutzbar, 
 --- 
 
 > **Happy hacking & testing 802.1X!** 🎉  
+
