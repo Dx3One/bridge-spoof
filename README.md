@@ -18,9 +18,9 @@
 * **Beim Beenden alle Änderungen rückgängig macht** – MAC wiederherstellen, tcpdump stoppen und die Bridge entfernen.
 
 > ⚠️  **Root‑Rechte nötig!**  
-> Das Tool verändert Netzwerkschnittstellen. Führe es daher mit `sudo` aus:  
+> Das Tool verändert Netzwerkschnittstellen.  
 > ```bash
-> sudo bridge-spoof
+> bridge-spoof
 > ```
 
 ---
@@ -90,4 +90,5 @@ Dieses Projekt ist unter der **MIT‑Lizenz** veröffentlicht – frei nutzbar, 
 --- 
 
 > **Happy hacking & testing 802.1X!** 🎉  
+
 
