@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bridge-spoof"
+version = "0.1.0"
+description = "Bridge + MAC‑Spoofing + tcpdump – interaktive CLI (root‑Rechte nötig)"
+readme = "README.md"
+requires-python = ">=3.8"
+
+# keine externen Python‑Abhängigkeiten – alles System‑Befehle
+
+[project.scripts]
+bridge-spoof = "bridge_spoof.main:main"
